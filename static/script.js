@@ -23,6 +23,7 @@ function main() {
           addressLink.onclick = (event) => {
             event.preventDefault();
             playStation(station[0]); // station_id
+            document.getElementById("url").value = station[1]; // station_address
           };
 
           addressCell.appendChild(addressLink);
