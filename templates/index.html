@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>OMXPlayer Remote</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <title>Pi Radio Remote</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </head>
 
 <body>
-    <h1>OMXPlayer Remote</h1>
+    <h1>Pi Radio Remote</h1>
     <iframe name="hidden_iframe" style="display:none;"></iframe>
     <form action="/play" method="post" target="hidden_iframe">
         <label for="url">Stream URL:</label>
@@ -23,14 +23,24 @@
         <button type="submit">Stop</button>
     </form>
 
-    <h2>Now Playing Metadata:</h2>
+    <h2>Now Playing:</h2>
     <p id="station-name">Station: Unknown</p>
     <p id="genre">Genre: Unknown</p>
     <p id="track-title">Track: Unknown</p>
     <p id="station-url">URL: Unknown</p>
 
     <h2>Saved Stations</h2>
-    <ul id="station-list"></ul>
+    <table id="station-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be populated by JavaScript -->
+        </tbody>
+    </table>
 </body>
 
 </html>

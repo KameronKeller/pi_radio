@@ -4,13 +4,23 @@ function fetchStations() {
   fetch("/stations")
     .then((response) => response.json())
     .then((data) => {
-      const stationList = document.getElementById("station-list");
-      stationList.innerHTML = "";
+      const stationTableBody = document
+        .getElementById("station-table")
+        .getElementsByTagName("tbody")[0];
+      stationTableBody.innerHTML = "";
       data.forEach((station) => {
-        const li = document.createElement("li");
-        li.textContent = station[2] + "|" + station[1]; // station_name
-        li.onclick = () => playStation(station[0]); // station_id
-        stationList.appendChild(li);
+        const row = document.createElement("tr");
+        const nameCell = document.createElement("td");
+        const addressCell = document.createElement("td");
+
+        nameCell.textContent = station[2]; // station_name
+        addressCell.textContent = station[1]; // station_address
+
+        row.appendChild(nameCell);
+        row.appendChild(addressCell);
+
+        row.onclick = () => playStation(station[0]); // station_id
+        stationTableBody.appendChild(row);
       });
     })
     .catch((error) => {
@@ -50,6 +60,6 @@ window.addEventListener("blur", () => {
 });
 
 // Periodically fetch metadata every 20 seconds
-setInterval(fetchMetadata, 20000);
+// setInterval(fetchMetadata, 20000);
 window.onload = fetchStations;
 // window.onload = fetchMetadata;  // Fetch metadata when the page loads
