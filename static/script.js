@@ -32,7 +32,7 @@ function main() {
           };
 
           const deleteButton = document.createElement("button");
-          deleteButton.textContent = "Delete";
+          deleteButton.innerHTML = "&#128465;"; // Unicode for trash can icon
           deleteButton.onclick = () => {
             deleteStation(stationId, row); // pass the row to be deleted
           };
@@ -53,23 +53,23 @@ function main() {
   }
 
   function playStation(stationAddress) {
-    fetch('/play', {
-      method: 'POST',
+    fetch("/play", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        'url': stationAddress
+        url: stationAddress,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
       })
-    })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-    })
-    .catch((error) => {
-      console.error("Error playing station:", error);
-    });
+      .catch((error) => {
+        console.error("Error playing station:", error);
+      });
   }
 
   function deleteStation(stationId, row) {
