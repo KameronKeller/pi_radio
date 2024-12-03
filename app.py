@@ -47,8 +47,10 @@ def fetch_metadata(url):
 def save_station(url, station_name):
     conn = sqlite3.connect('radio_stations.db')
     c = conn.cursor()
-    c.execute("INSERT INTO stations (url, station_name) VALUES (?, ?)", (url, station_name))
-    conn.commit()
+    c.execute("SELECT COUNT(*) FROM stations WHERE url = ?", (url,))
+    if c.fetchone()[0] == 0:
+        c.execute("INSERT INTO stations (url, station_name) VALUES (?, ?)", (url, station_name))
+        conn.commit()
     conn.close()
 
 @app.route('/')
@@ -100,22 +102,6 @@ def stations():
     stations = c.fetchall()
     conn.close()
     return jsonify(stations)
-
-# @app.route('/play_station/<int:station_id>', methods=['POST'])
-# def play_station(station_id):
-#     global current_process, current_url
-#     conn = sqlite3.connect('radio_stations.db')
-#     c = conn.cursor()
-#     c.execute("SELECT url FROM stations WHERE id = ?", (station_id,))
-#     station = c.fetchone()
-#     conn.close()
-#     if station:
-#         url = station[0]
-#         stop()
-#         current_url = url
-#         current_process = subprocess.Popen(['omxplayer', url], stdin=subprocess.PIPE)
-#         return "Playing " + url
-#     return "Station not found", 404
 
 @app.route('/delete_station/<int:station_id>', methods=['DELETE'])
 def delete_station(station_id):
