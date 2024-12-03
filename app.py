@@ -101,21 +101,21 @@ def stations():
     conn.close()
     return jsonify(stations)
 
-@app.route('/play_station/<int:station_id>', methods=['POST'])
-def play_station(station_id):
-    global current_process, current_url
-    conn = sqlite3.connect('radio_stations.db')
-    c = conn.cursor()
-    c.execute("SELECT url FROM stations WHERE id = ?", (station_id,))
-    station = c.fetchone()
-    conn.close()
-    if station:
-        url = station[0]
-        stop()
-        current_url = url
-        current_process = subprocess.Popen(['omxplayer', url], stdin=subprocess.PIPE)
-        return "Playing " + url
-    return "Station not found", 404
+# @app.route('/play_station/<int:station_id>', methods=['POST'])
+# def play_station(station_id):
+#     global current_process, current_url
+#     conn = sqlite3.connect('radio_stations.db')
+#     c = conn.cursor()
+#     c.execute("SELECT url FROM stations WHERE id = ?", (station_id,))
+#     station = c.fetchone()
+#     conn.close()
+#     if station:
+#         url = station[0]
+#         stop()
+#         current_url = url
+#         current_process = subprocess.Popen(['omxplayer', url], stdin=subprocess.PIPE)
+#         return "Playing " + url
+#     return "Station not found", 404
 
 @app.route('/delete_station/<int:station_id>', methods=['DELETE'])
 def delete_station(station_id):

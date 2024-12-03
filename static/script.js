@@ -26,7 +26,7 @@ function main() {
           addressLink.textContent = stationAddress; // station_address
           addressLink.onclick = (event) => {
             event.preventDefault();
-            playStation(stationId); // station_id
+            playStation(stationAddress); // pass the station address
             document.getElementById("url").value = stationAddress; // station_address
             fetchMetadata();
           };
@@ -52,20 +52,24 @@ function main() {
       });
   }
 
-  function playStation(stationId) {
-    fetch(`/play_station/${stationId}`, { method: "POST" })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.text();
+  function playStation(stationAddress) {
+    fetch('/play', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        'url': stationAddress
       })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error playing station:", error);
-      });
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+    })
+    .catch((error) => {
+      console.error("Error playing station:", error);
+    });
   }
 
   function deleteStation(stationId, row) {
