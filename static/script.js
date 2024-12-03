@@ -73,6 +73,9 @@ function main() {
   }
 
   function deleteStation(stationId, row) {
+    if (!confirm("Are you sure you want to delete this station?")) {
+      return;
+    }
     fetch(`/delete_station/${stationId}`, { method: "DELETE" })
       .then((response) => {
         if (!response.ok) {
