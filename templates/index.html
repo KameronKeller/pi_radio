@@ -11,7 +11,7 @@
 <body>
     <h1>Pi Radio Remote</h1>
     <iframe name="hidden_iframe" style="display:none;"></iframe>
-    <form action="/play" method="post" target="hidden_iframe">
+    <form id="play-form">
         <label for="url">Stream URL:</label>
         <input type="text" id="url" name="url" required>
         <button type="submit">Play</button>

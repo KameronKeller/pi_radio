@@ -66,6 +66,7 @@ function main() {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
+        fetchStations(); // refetch the stations
       })
       .catch((error) => {
         console.error("Error playing station:", error);
@@ -118,6 +119,14 @@ function main() {
   window.addEventListener("blur", () => {
     isWindowFocused = false;
   });
+
+  document
+    .getElementById("play-form")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      const url = document.getElementById("url").value;
+      playStation(url);
+    });
 
   // Periodically fetch metadata every 20 seconds
   // setInterval(fetchMetadata, 20000);
