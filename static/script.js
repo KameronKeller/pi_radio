@@ -10,27 +10,31 @@ function main() {
           .getElementsByTagName("tbody")[0];
         stationTableBody.innerHTML = "";
         data.forEach((station) => {
+          const stationId = station[0];
+          const stationAddress = station[1];
+          const stationName = station[2];
+
           const row = document.createElement("tr");
           const nameCell = document.createElement("td");
           const addressCell = document.createElement("td");
           const deleteCell = document.createElement("td");
 
-          nameCell.textContent = station[2]; // station_name
+          nameCell.textContent = stationName; // station_name
 
           const addressLink = document.createElement("a");
           addressLink.href = "#";
-          addressLink.textContent = station[1]; // station_address
+          addressLink.textContent = stationAddress; // station_address
           addressLink.onclick = (event) => {
             event.preventDefault();
-            playStation(station[0]); // station_id
-            document.getElementById("url").value = station[1]; // station_address
+            playStation(stationId); // station_id
+            document.getElementById("url").value = stationAddress; // station_address
             fetchMetadata();
           };
 
           const deleteButton = document.createElement("button");
           deleteButton.textContent = "Delete";
           deleteButton.onclick = () => {
-            deleteStation(station[0]); // station_id
+            deleteStation(stationId, row); // pass the row to be deleted
           };
 
           addressCell.appendChild(addressLink);
@@ -64,13 +68,13 @@ function main() {
       });
   }
 
-  function deleteStation(stationId) {
+  function deleteStation(stationId, row) {
     fetch(`/delete_station/${stationId}`, { method: "DELETE" })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        fetchStations();
+        row.remove(); // remove the row from the table
       })
       .catch((error) => {
         console.error("Error deleting station:", error);
