@@ -16,17 +16,41 @@ function main() {
           const addressCell = document.createElement("td");
 
           nameCell.textContent = station[2]; // station_name
-          addressCell.textContent = station[1]; // station_address
+
+          const addressLink = document.createElement("a");
+          addressLink.href = "#";
+          addressLink.textContent = station[1]; // station_address
+          addressLink.onclick = (event) => {
+            event.preventDefault();
+            playStation(station[0]); // station_id
+          };
+
+          addressCell.appendChild(addressLink);
 
           row.appendChild(nameCell);
           row.appendChild(addressCell);
 
-          row.onclick = () => playStation(station[0]); // station_id
           stationTableBody.appendChild(row);
         });
       })
       .catch((error) => {
         console.error("Error fetching stations:", error);
+      });
+  }
+
+  function playStation(stationId) {
+    fetch(`/play_station/${stationId}`, { method: "POST" })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.text();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error playing station:", error);
       });
   }
 
