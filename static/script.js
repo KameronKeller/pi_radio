@@ -1,5 +1,4 @@
 function main() {
-  console.log("== running");
   let isWindowFocused = true;
 
   function fetchStations() {
@@ -14,6 +13,7 @@ function main() {
           const row = document.createElement("tr");
           const nameCell = document.createElement("td");
           const addressCell = document.createElement("td");
+          const deleteCell = document.createElement("td");
 
           nameCell.textContent = station[2]; // station_name
 
@@ -24,12 +24,21 @@ function main() {
             event.preventDefault();
             playStation(station[0]); // station_id
             document.getElementById("url").value = station[1]; // station_address
+            fetchMetadata();
+          };
+
+          const deleteButton = document.createElement("button");
+          deleteButton.textContent = "Delete";
+          deleteButton.onclick = () => {
+            deleteStation(station[0]); // station_id
           };
 
           addressCell.appendChild(addressLink);
+          deleteCell.appendChild(deleteButton);
 
           row.appendChild(nameCell);
           row.appendChild(addressCell);
+          row.appendChild(deleteCell);
 
           stationTableBody.appendChild(row);
         });
@@ -52,6 +61,19 @@ function main() {
       })
       .catch((error) => {
         console.error("Error playing station:", error);
+      });
+  }
+
+  function deleteStation(stationId) {
+    fetch(`/delete_station/${stationId}`, { method: "DELETE" })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        fetchStations();
+      })
+      .catch((error) => {
+        console.error("Error deleting station:", error);
       });
   }
 

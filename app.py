@@ -117,6 +117,15 @@ def play_station(station_id):
         return "Playing " + url
     return "Station not found", 404
 
+@app.route('/delete_station/<int:station_id>', methods=['DELETE'])
+def delete_station(station_id):
+    conn = sqlite3.connect('radio_stations.db')
+    c = conn.cursor()
+    c.execute("DELETE FROM stations WHERE id = ?", (station_id,))
+    conn.commit()
+    conn.close()
+    return "", 204
+
 if __name__ == '__main__':
     init_db()
     app.run(host='0.0.0.0', port=5000)
